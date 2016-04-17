@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<constraint-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping/validation-mapping-1.0.xsd"
+                     xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
+    <default-package>com.saddham</default-package>
+    <bean class="Employee" ignore-annotations="true">
+        <getter name="fullName" ignore-annotations="true">
+            <constraint annotation="com.saddham.ValidFullName">
+                <message>Not valid</message>
+                <groups>
+                    <value>EmployeeChecks</value>
+                </groups>
+                <!--<element name="max">10</element>-->
+            </constraint>
+        </getter>
+        <getter name="lastWorkingDay" ignore-annotations="true">
+            <constraint annotation="com.saddham.FutureDate">
+                <message>Not valid</message>
+                <groups>
+                    <value>EmployeeChecks</value>
+                </groups>
+                <!--<element name="max">10</element>-->
+            </constraint>
+        </getter>
+    </bean>
+    <bean class="Contractor" ignore-annotations="true">
+        <class ignore-annotations="true">
+            <group-sequence>
+                <value>ContractorChecks</value>
+                <value>EmployeeChecks</value>
+                <value>Contractor</value>
+            </group-sequence>
+        </class>
+        <getter name="company" ignore-annotations="true">
+            <constraint annotation="javax.validation.constraints.NotNull">
+                <message>Not valid</message>
+                <groups>
+                    <value>ContractorChecks</value>
+                </groups>
+                <!--<element name="max">10</element>-->
+            </constraint>
+        </getter>
+    </bean>
+    <constraint-definition annotation="com.saddham.ValidFullName">
+        <validated-by include-existing-validators="true"/>
+    </constraint-definition>
+
+    <constraint-definition annotation="com.saddham.FutureDate">
+        <validated-by include-existing-validators="false">
+            <value>
+                com.saddham.FutureDateValidator
+            </value>
+        </validated-by>
+    </constraint-definition>
+</constraint-mappings>
